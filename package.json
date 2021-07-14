@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@data-structure/deque": "^8.0.0",
-    "@iterable-iterator/iter": "^0.0.2",
+    "@iterable-iterator/iter": "^1.0.0",
     "@iterable-iterator/list": "^0.0.2",
     "@iterable-iterator/map": "^0.1.0"
   },
