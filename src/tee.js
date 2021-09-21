@@ -1,8 +1,6 @@
 import {iter} from '@iterable-iterator/iter';
-import {list} from '@iterable-iterator/list';
-import {map} from '@iterable-iterator/map';
 
-import {deque} from '@data-structure/deque';
+import _tee from './_tee.js';
 
 /**
  * Returns <code>n</code> copies of the input iterable. Note that if the input
@@ -11,34 +9,8 @@ import {deque} from '@data-structure/deque';
  *
  * @param {Iterable} iterable - The input iterable.
  * @param {number} n - The number of copies to make.
- * @returns {IterableIterator[]}
+ * @returns {IterableIterator<IterableIterator>}
  */
-export default function tee(iterable, n) {
-	const iterator = iter(iterable);
+const tee = (iterable, n) => _tee(iter(iterable), n);
 
-	const copies = [];
-
-	while (n-- > 0) {
-		copies.push(deque());
-	}
-
-	const gen = function* (mycopy) {
-		while (true) {
-			if (mycopy.length === 0) {
-				const current = iterator.next();
-
-				if (current.done) {
-					return;
-				}
-
-				for (const copy of copies) {
-					copy.append(current.value);
-				}
-			}
-
-			yield mycopy.popleft();
-		}
-	};
-
-	return list(map(gen, copies));
-}
+export default tee;

@@ -35,3 +35,27 @@ test('tee of infinite sequence', (t) => {
 		t.deepEqual(list(head(it, 100)), list(range(1000, 1100)));
 	}
 });
+
+test('tee does not pull values that have not been read yet', (t) => {
+	const iterator = count();
+	for (const it of tee(iterator, 10)) {
+		t.deepEqual(list(head(it, 1000)), list(range(1000)));
+		t.deepEqual(list(head(it, 100)), list(range(1000, 1100)));
+	}
+
+	t.deepEqual(iterator.next(), {done: false, value: 1100});
+});
+
+test('tee can be [first, second] destructured', (t) => {
+	const [a, b] = tee(range(10), 2);
+	t.deepEqual(list(b), list(range(10)));
+	t.deepEqual(list(a), list(range(10)));
+});
+
+test('tee can be [head, ...tail] destructured', (t) => {
+	const [a, ...rest] = tee(range(10), 3);
+	t.deepEqual(list(a), list(range(10)));
+	const [b, c] = rest;
+	t.deepEqual(list(c), list(range(10)));
+	t.deepEqual(list(b), list(range(10)));
+});
