@@ -1,7 +1,7 @@
 {
   "name": "@iterable-iterator/tee",
   "description": "Iterable copy function for JavaScript",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "AGPL-3.0",
   "author": "make-github-pseudonymous-again",
   "homepage": "https://iterable-iterator.github.io/tee",
