@@ -566,8 +566,128 @@
   {
     "__docId__": 48,
     "kind": "file",
+    "name": "src/_tee.js",
+    "content": "import {nrepeat, repeat} from '@iterable-iterator/repeat';\nimport {single} from '@data-structure-algebra/singly-linked-list';\n\nimport myMap from './myMap.js';\nimport copy from './copy.js';\n\n/**\n * Returns <code>n</code> copies of the input iterator. Note that if the input\n * iterator is an iterator, then it must be discarded by the caller after\n * calling tee.\n *\n * TODO allow n = +Infinity?\n *\n * @param {Iterator} iterator - The input iterator.\n * @param {number} n - The number of copies to make.\n * @returns {IterableIterator<IterableIterator>}\n */\nconst tee = (iterator, n) =>\n\tmyMap(copy, nrepeat(iterator, n), repeat(single(null)));\n\nexport default tee;\n",
+    "static": true,
+    "longname": "/home/runner/work/tee/tee/src/_tee.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "function",
+    "name": "tee",
+    "memberof": "src/_tee.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/_tee.js~tee",
+    "access": "public",
+    "export": true,
+    "importPath": "@iterable-iterator/tee/src/_tee.js",
+    "importStyle": "tee",
+    "description": "Returns <code>n</code> copies of the input iterator. Note that if the input\niterator is an iterator, then it must be discarded by the caller after\ncalling tee.\n\nTODO allow n = +Infinity?",
+    "lineNumber": 18,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{IterableIterator<IterableIterator>}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Iterator"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "iterator",
+        "description": "The input iterator."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "n",
+        "description": "The number of copies to make."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "IterableIterator<IterableIterator>"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 50,
+    "kind": "file",
+    "name": "src/copy.js",
+    "content": "import assert from 'assert';\n\nimport {\n\tNode,\n\t_value,\n\t_setValue,\n\t_isLast,\n\t_shift,\n\t_setNext,\n\tsingle,\n} from '@data-structure-algebra/singly-linked-list';\n\n/**\n * Create a copy of an input iterator given a buffer cursor.\n *\n * @param {Iterator} iterator Input iterator.\n * @param {Node} cursor Buffer cursor.\n * @return {IterableIterator}\n */\nconst copy = (iterator, cursor) => {\n\tassert(cursor instanceof Node);\n\n\treturn {\n\t\t[Symbol.iterator]() {\n\t\t\treturn this;\n\t\t},\n\t\tnext() {\n\t\t\tif (_isLast(cursor)) {\n\t\t\t\tassert(_value(cursor) === null);\n\t\t\t\t_setValue(cursor, iterator.next());\n\t\t\t\t_setNext(cursor, _value(cursor).done ? cursor : single(null));\n\t\t\t}\n\n\t\t\tassert(!_isLast(cursor));\n\n\t\t\tconst returnValue = _value(cursor);\n\n\t\t\tcursor = _shift(cursor);\n\n\t\t\treturn returnValue;\n\t\t},\n\t};\n};\n\nexport default copy;\n",
+    "static": true,
+    "longname": "/home/runner/work/tee/tee/src/copy.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 51,
+    "kind": "function",
+    "name": "copy",
+    "memberof": "src/copy.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/copy.js~copy",
+    "access": "public",
+    "export": true,
+    "importPath": "@iterable-iterator/tee/src/copy.js",
+    "importStyle": "copy",
+    "description": "Create a copy of an input iterator given a buffer cursor.",
+    "lineNumber": 20,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Iterator"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "iterator",
+        "description": "Input iterator."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Node"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "cursor",
+        "description": "Buffer cursor."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "IterableIterator"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "file",
     "name": "src/index.js",
-    "content": "export {default as tee} from './tee.js';\n",
+    "content": "export {default as _tee} from './_tee.js';\nexport {default as copy} from './copy.js';\nexport {default as tee} from './tee.js';\n",
     "static": true,
     "longname": "/home/runner/work/tee/tee/src/index.js",
     "access": "public",
@@ -575,10 +695,54 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 49,
+    "__docId__": 53,
+    "kind": "file",
+    "name": "src/myMap.js",
+    "content": "import {starmap} from '@iterable-iterator/map';\nimport {_zip} from '@iterable-iterator/zip';\n\nconst myMap = (callable, ...iterables) => starmap(callable, _zip(iterables));\n\nexport default myMap;\n",
+    "static": true,
+    "longname": "/home/runner/work/tee/tee/src/myMap.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 54,
+    "kind": "function",
+    "name": "myMap",
+    "memberof": "src/myMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/myMap.js~myMap",
+    "access": "public",
+    "export": true,
+    "importPath": "@iterable-iterator/tee/src/myMap.js",
+    "importStyle": "myMap",
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "params": [
+      {
+        "name": "callable",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "iterables",
+        "types": [
+          "...*"
+        ],
+        "spread": true
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 55,
     "kind": "file",
     "name": "src/tee.js",
-    "content": "import {iter} from '@iterable-iterator/iter';\nimport {list} from '@iterable-iterator/list';\nimport {map} from '@iterable-iterator/map';\n\nimport {deque} from '@data-structure/deque';\n\n/**\n * Returns <code>n</code> copies of the input iterable. Note that if the input\n * iterable is an iterator, then it must be discarded by the caller after\n * calling tee.\n *\n * @param {Iterable} iterable - The input iterable.\n * @param {number} n - The number of copies to make.\n * @returns {IterableIterator[]}\n */\nexport default function tee(iterable, n) {\n\tconst iterator = iter(iterable);\n\n\tconst copies = [];\n\n\twhile (n-- > 0) {\n\t\tcopies.push(deque());\n\t}\n\n\tconst gen = function* (mycopy) {\n\t\twhile (true) {\n\t\t\tif (mycopy.length === 0) {\n\t\t\t\tconst current = iterator.next();\n\n\t\t\t\tif (current.done) {\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tfor (const copy of copies) {\n\t\t\t\t\tcopy.append(current.value);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tyield mycopy.popleft();\n\t\t}\n\t};\n\n\treturn list(map(gen, copies));\n}\n",
+    "content": "import {iter} from '@iterable-iterator/iter';\n\nimport _tee from './_tee.js';\n\n/**\n * Returns <code>n</code> copies of the input iterable. Note that if the input\n * iterable is an iterator, then it must be discarded by the caller after\n * calling tee.\n *\n * @param {Iterable} iterable - The input iterable.\n * @param {number} n - The number of copies to make.\n * @returns {IterableIterator<IterableIterator>}\n */\nconst tee = (iterable, n) => _tee(iter(iterable), n);\n\nexport default tee;\n",
     "static": true,
     "longname": "/home/runner/work/tee/tee/src/tee.js",
     "access": "public",
@@ -586,7 +750,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 50,
+    "__docId__": 56,
     "kind": "function",
     "name": "tee",
     "memberof": "src/tee.js",
@@ -599,11 +763,11 @@
     "importPath": "@iterable-iterator/tee/src/tee.js",
     "importStyle": "tee",
     "description": "Returns <code>n</code> copies of the input iterable. Note that if the input\niterable is an iterator, then it must be discarded by the caller after\ncalling tee.",
-    "lineNumber": 16,
+    "lineNumber": 14,
     "unknown": [
       {
         "tagName": "@returns",
-        "tagValue": "{IterableIterator[]}"
+        "tagValue": "{IterableIterator<IterableIterator>}"
       }
     ],
     "params": [
@@ -631,7 +795,7 @@
     "return": {
       "nullable": null,
       "types": [
-        "IterableIterator[]"
+        "IterableIterator<IterableIterator>"
       ],
       "spread": false,
       "description": ""
@@ -647,7 +811,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"@iterable-iterator/tee\",\n  \"description\": \"Iterable copy function for JavaScript\",\n  \"version\": \"1.0.0\",\n  \"license\": \"AGPL-3.0\",\n  \"author\": \"make-github-pseudonymous-again\",\n  \"homepage\": \"https://iterable-iterator.github.io/tee\",\n  \"repository\": {\n    \"url\": \"https://github.com/iterable-iterator/tee\",\n    \"type\": \"git\"\n  },\n  \"bugs\": {\n    \"url\": \"https://github.com/iterable-iterator/tee/issues\"\n  },\n  \"keywords\": [\n    \"copy\",\n    \"iter\",\n    \"iterable\",\n    \"iterator\",\n    \"tee\"\n  ],\n  \"sideEffects\": false,\n  \"type\": \"module\",\n  \"source\": \"src/index.js\",\n  \"main\": \"dist/index.cjs\",\n  \"module\": \"dist/index.module.js\",\n  \"esmodule\": \"dist/index.modern.js\",\n  \"umd:main\": \"dist/index.umd.js\",\n  \"unpkg\": \"dist/index.umd.js\",\n  \"exports\": {\n    \".\": {\n      \"browser\": \"./dist/index.module.js\",\n      \"umd\": \"./dist/index.umd.js\",\n      \"require\": \"./dist/index.cjs\",\n      \"default\": \"./dist/index.modern.js\"\n    }\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"build\": \"NODE_ENV=production microbundle\",\n    \"build-docs\": \"esdoc\",\n    \"build-gh-pages\": \"npm run build-docs\",\n    \"ci:build\": \"npm run build\",\n    \"ci:test\": \"npm run lint-config && npm run lint && npm run cover\",\n    \"commit-msg\": \"commitlint --edit\",\n    \"cover\": \"NODE_ENV=cover c8 --all --src src --reporter lcov --reporter text-summary --reporter text npm test\",\n    \"debug\": \"NODE_ENV=debug npm run test -- -st --fail-fast\",\n    \"dev\": \"npm run lint-config-and-fix && npm run lint-and-fix && npm run cover -- -- -st --fail-fast\",\n    \"install-hooks\": \"husky install\",\n    \"lint\": \"xo\",\n    \"lint-and-fix\": \"npm run lint -- --fix\",\n    \"lint-config\": \"fixpack --dryRun\",\n    \"lint-config-and-fix\": \"fixpack || fixpack\",\n    \"postinstall\": \"npm run install-hooks\",\n    \"postpublish\": \"pinst --enable\",\n    \"precommit\": \"lint-staged\",\n    \"prepare\": \"npm run build\",\n    \"prepublishOnly\": \"pinst --disable\",\n    \"release\": \"np --message ':hatching_chick: release: Bumping to v%s.'\",\n    \"test\": \"ava\"\n  },\n  \"dependencies\": {\n    \"@data-structure/deque\": \"^9.0.0\",\n    \"@iterable-iterator/iter\": \"^1.0.0\",\n    \"@iterable-iterator/list\": \"^1.0.0\",\n    \"@iterable-iterator/map\": \"^1.0.0\"\n  },\n  \"devDependencies\": {\n    \"@babel/core\": \"7.14.6\",\n    \"@babel/preset-env\": \"7.14.7\",\n    \"@babel/register\": \"7.14.5\",\n    \"@commitlint/cli\": \"12.1.4\",\n    \"@iterable-iterator/count\": \"1.0.0\",\n    \"@iterable-iterator/range\": \"2.0.0\",\n    \"@iterable-iterator/slice\": \"1.0.0\",\n    \"@js-library/commitlint-config\": \"0.0.4\",\n    \"ava\": \"3.15.0\",\n    \"babel-plugin-transform-remove-console\": \"6.9.4\",\n    \"babel-plugin-unassert\": \"3.1.0\",\n    \"babel-preset-power-assert\": \"3.0.0\",\n    \"c8\": \"7.7.3\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"1.0.0\",\n    \"esdoc-inject-script-plugin\": \"1.0.0\",\n    \"esdoc-inject-style-plugin\": \"1.0.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"fixpack\": \"4.0.0\",\n    \"husky\": \"7.0.1\",\n    \"lint-staged\": \"11.0.1\",\n    \"microbundle\": \"0.13.1\",\n    \"np\": \"7.5.0\",\n    \"pinst\": \"2.1.6\",\n    \"power-assert\": \"1.6.1\",\n    \"regenerator-runtime\": \"0.13.7\",\n    \"xo\": \"0.41.0\"\n  },\n  \"ava\": {\n    \"files\": [\n      \"test/src/**/*\"\n    ],\n    \"require\": [\n      \"regenerator-runtime/runtime\",\n      \"@babel/register\"\n    ],\n    \"timeout\": \"1m\"\n  },\n  \"babel\": {\n    \"sourceMaps\": true,\n    \"presets\": [\n      [\n        \"@babel/preset-env\",\n        {\n          \"targets\": \"current node\"\n        }\n      ]\n    ],\n    \"plugins\": [\n      [\n        \"transform-remove-console\",\n        {\n          \"exclude\": [\n            \"log\",\n            \"error\",\n            \"warn\"\n          ]\n        }\n      ]\n    ],\n    \"env\": {\n      \"debug\": {\n        \"presets\": [\n          \"babel-preset-power-assert\"\n        ],\n        \"plugins\": [\n          [\n            \"transform-remove-console\",\n            {\n              \"exclude\": [\n                \"debug\",\n                \"log\",\n                \"error\",\n                \"warn\"\n              ]\n            }\n          ]\n        ]\n      },\n      \"test\": {\n        \"presets\": [\n          \"babel-preset-power-assert\"\n        ]\n      },\n      \"cover\": {\n        \"sourceMaps\": \"both\",\n        \"presets\": [\n          \"babel-preset-power-assert\"\n        ]\n      },\n      \"development\": {\n        \"presets\": [\n          [\n            \"@babel/preset-env\",\n            {\n              \"targets\": [\n                \"defaults\",\n                \"maintained node versions\"\n              ]\n            }\n          ],\n          \"babel-preset-power-assert\"\n        ]\n      },\n      \"production\": {\n        \"presets\": [\n          [\n            \"@babel/preset-env\",\n            {\n              \"targets\": [\n                \"defaults\",\n                \"maintained node versions\"\n              ]\n            }\n          ]\n        ],\n        \"plugins\": [\n          \"babel-plugin-unassert\"\n        ]\n      }\n    }\n  },\n  \"lint-staged\": {\n    \"*.js\": [\n      \"npm run lint-and-fix\"\n    ],\n    \"package.json\": [\n      \"npm run lint-config-and-fix\"\n    ]\n  },\n  \"prettier\": {\n    \"trailingComma\": \"all\"\n  },\n  \"xo\": {\n    \"prettier\": true,\n    \"plugins\": [\n      \"unicorn\"\n    ],\n    \"rules\": {\n      \"unicorn/filename-case\": [\n        \"error\",\n        {\n          \"cases\": {\n            \"camelCase\": true,\n            \"pascalCase\": true\n          }\n        }\n      ]\n    },\n    \"overrides\": [\n      {\n        \"files\": [\n          \"doc/**\"\n        ],\n        \"env\": \"browser\"\n      }\n    ]\n  }\n}\n",
+    "content": "{\n  \"name\": \"@iterable-iterator/tee\",\n  \"description\": \"Iterable copy function for JavaScript\",\n  \"version\": \"2.0.0\",\n  \"license\": \"AGPL-3.0\",\n  \"author\": \"make-github-pseudonymous-again\",\n  \"homepage\": \"https://iterable-iterator.github.io/tee\",\n  \"repository\": {\n    \"url\": \"https://github.com/iterable-iterator/tee\",\n    \"type\": \"git\"\n  },\n  \"bugs\": {\n    \"url\": \"https://github.com/iterable-iterator/tee/issues\"\n  },\n  \"keywords\": [\n    \"copy\",\n    \"iter\",\n    \"iterable\",\n    \"iterator\",\n    \"tee\"\n  ],\n  \"sideEffects\": false,\n  \"type\": \"module\",\n  \"source\": \"src/index.js\",\n  \"main\": \"dist/index.cjs\",\n  \"module\": \"dist/index.module.js\",\n  \"esmodule\": \"dist/index.modern.js\",\n  \"umd:main\": \"dist/index.umd.js\",\n  \"unpkg\": \"dist/index.umd.js\",\n  \"exports\": {\n    \".\": {\n      \"browser\": \"./dist/index.module.js\",\n      \"umd\": \"./dist/index.umd.js\",\n      \"require\": \"./dist/index.cjs\",\n      \"default\": \"./dist/index.modern.js\"\n    }\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"build\": \"NODE_ENV=production microbundle\",\n    \"build-docs\": \"esdoc\",\n    \"build-gh-pages\": \"npm run build-docs\",\n    \"ci:build\": \"npm run build\",\n    \"ci:test\": \"npm run lint-config && npm run lint && npm run cover\",\n    \"commit-msg\": \"commitlint --edit\",\n    \"cover\": \"NODE_ENV=cover c8 --all --src src --reporter lcov --reporter text-summary --reporter text npm test\",\n    \"debug\": \"NODE_ENV=debug npm run test -- -st --fail-fast\",\n    \"dev\": \"npm run lint-config-and-fix && npm run lint-and-fix && npm run cover -- -- -st --fail-fast\",\n    \"install-hooks\": \"husky install\",\n    \"lint\": \"xo\",\n    \"lint-and-fix\": \"npm run lint -- --fix\",\n    \"lint-config\": \"fixpack --dryRun\",\n    \"lint-config-and-fix\": \"fixpack || fixpack\",\n    \"postinstall\": \"npm run install-hooks\",\n    \"postpublish\": \"pinst --enable\",\n    \"precommit\": \"lint-staged\",\n    \"prepare\": \"npm run build\",\n    \"prepublishOnly\": \"pinst --disable\",\n    \"release\": \"np --message ':hatching_chick: release: Bumping to v%s.'\",\n    \"test\": \"ava\"\n  },\n  \"dependencies\": {\n    \"@data-structure-algebra/singly-linked-list\": \"^0.0.1\",\n    \"@iterable-iterator/iter\": \"^1.0.1\",\n    \"@iterable-iterator/map\": \"^1.0.1\",\n    \"@iterable-iterator/repeat\": \"^1.0.1\",\n    \"@iterable-iterator/zip\": \"^1.0.1\"\n  },\n  \"devDependencies\": {\n    \"@babel/core\": \"7.15.5\",\n    \"@babel/preset-env\": \"7.15.6\",\n    \"@babel/register\": \"7.15.3\",\n    \"@commitlint/cli\": \"13.1.0\",\n    \"@iterable-iterator/count\": \"1.0.1\",\n    \"@iterable-iterator/list\": \"^1.0.1\",\n    \"@iterable-iterator/range\": \"2.1.0\",\n    \"@iterable-iterator/slice\": \"1.0.1\",\n    \"@js-library/commitlint-config\": \"0.0.4\",\n    \"ava\": \"3.15.0\",\n    \"babel-plugin-transform-remove-console\": \"6.9.4\",\n    \"babel-plugin-unassert\": \"3.1.0\",\n    \"babel-preset-power-assert\": \"3.0.0\",\n    \"c8\": \"7.9.0\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-ecmascript-proposal-plugin\": \"1.0.0\",\n    \"esdoc-inject-script-plugin\": \"1.0.0\",\n    \"esdoc-inject-style-plugin\": \"1.0.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"fixpack\": \"4.0.0\",\n    \"husky\": \"7.0.2\",\n    \"lint-staged\": \"11.1.2\",\n    \"microbundle\": \"0.13.1\",\n    \"np\": \"7.5.0\",\n    \"pinst\": \"2.1.6\",\n    \"power-assert\": \"1.6.1\",\n    \"regenerator-runtime\": \"0.13.9\",\n    \"xo\": \"0.44.0\"\n  },\n  \"ava\": {\n    \"files\": [\n      \"test/src/**/*\"\n    ],\n    \"require\": [\n      \"regenerator-runtime/runtime\",\n      \"@babel/register\"\n    ],\n    \"timeout\": \"1m\"\n  },\n  \"babel\": {\n    \"sourceMaps\": true,\n    \"presets\": [\n      [\n        \"@babel/preset-env\",\n        {\n          \"targets\": \"current node\"\n        }\n      ]\n    ],\n    \"plugins\": [\n      [\n        \"transform-remove-console\",\n        {\n          \"exclude\": [\n            \"log\",\n            \"error\",\n            \"warn\"\n          ]\n        }\n      ]\n    ],\n    \"env\": {\n      \"debug\": {\n        \"presets\": [\n          \"babel-preset-power-assert\"\n        ],\n        \"plugins\": [\n          [\n            \"transform-remove-console\",\n            {\n              \"exclude\": [\n                \"debug\",\n                \"log\",\n                \"error\",\n                \"warn\"\n              ]\n            }\n          ]\n        ]\n      },\n      \"test\": {\n        \"presets\": [\n          \"babel-preset-power-assert\"\n        ]\n      },\n      \"cover\": {\n        \"sourceMaps\": \"both\",\n        \"presets\": [\n          \"babel-preset-power-assert\"\n        ]\n      },\n      \"development\": {\n        \"presets\": [\n          [\n            \"@babel/preset-env\",\n            {\n              \"targets\": [\n                \"defaults\",\n                \"maintained node versions\"\n              ]\n            }\n          ],\n          \"babel-preset-power-assert\"\n        ]\n      },\n      \"production\": {\n        \"presets\": [\n          [\n            \"@babel/preset-env\",\n            {\n              \"targets\": [\n                \"defaults\",\n                \"maintained node versions\"\n              ]\n            }\n          ]\n        ],\n        \"plugins\": [\n          \"babel-plugin-unassert\"\n        ]\n      }\n    }\n  },\n  \"lint-staged\": {\n    \"*.js\": [\n      \"npm run lint-and-fix\"\n    ],\n    \"package.json\": [\n      \"npm run lint-config-and-fix\"\n    ]\n  },\n  \"prettier\": {\n    \"trailingComma\": \"all\"\n  },\n  \"xo\": {\n    \"prettier\": true,\n    \"plugins\": [\n      \"unicorn\"\n    ],\n    \"rules\": {\n      \"unicorn/filename-case\": [\n        \"error\",\n        {\n          \"cases\": {\n            \"camelCase\": true,\n            \"pascalCase\": true\n          }\n        }\n      ],\n      \"unicorn/prefer-node-protocol\": \"off\"\n    },\n    \"overrides\": [\n      {\n        \"files\": [\n          \"doc/**\"\n        ],\n        \"env\": \"browser\"\n      }\n    ]\n  }\n}\n",
     "longname": "/home/runner/work/tee/tee/package.json",
     "name": "package.json",
     "static": true,

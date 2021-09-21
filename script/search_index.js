@@ -1,5 +1,23 @@
 window.esdocSearchIndex = [
   [
+    "@iterable-iterator/tee/src/copy.js~copy",
+    "function/index.html#static-function-copy",
+    "<span>copy</span> <span class=\"search-result-import-path\">@iterable-iterator/tee/src/copy.js</span>",
+    "function"
+  ],
+  [
+    "@iterable-iterator/tee/src/mymap.js~mymap",
+    "function/index.html#static-function-myMap",
+    "<span>myMap</span> <span class=\"search-result-import-path\">@iterable-iterator/tee/src/myMap.js</span>",
+    "function"
+  ],
+  [
+    "@iterable-iterator/tee/src/_tee.js~tee",
+    "function/index.html#static-function-tee",
+    "<span>tee</span> <span class=\"search-result-import-path\">@iterable-iterator/tee/src/_tee.js</span>",
+    "function"
+  ],
+  [
     "@iterable-iterator/tee/src/tee.js~tee",
     "function/index.html#static-function-tee",
     "<span>tee</span> <span class=\"search-result-import-path\">@iterable-iterator/tee/src/tee.js</span>",
@@ -288,9 +306,27 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/_tee.js",
+    "file/src/_tee.js.html",
+    "src/_tee.js",
+    "file"
+  ],
+  [
+    "src/copy.js",
+    "file/src/copy.js.html",
+    "src/copy.js",
+    "file"
+  ],
+  [
     "src/index.js",
     "file/src/index.js.html",
     "src/index.js",
+    "file"
+  ],
+  [
+    "src/mymap.js",
+    "file/src/myMap.js.html",
+    "src/myMap.js",
     "file"
   ],
   [
