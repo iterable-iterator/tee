@@ -1,10 +1,11 @@
 import test from 'ava';
 
+import {count} from '@iterable-iterator/count';
 import {list} from '@iterable-iterator/list';
 import {map} from '@iterable-iterator/map';
-import {count} from '@iterable-iterator/count';
 import {range} from '@iterable-iterator/range';
 import {head} from '@iterable-iterator/slice';
+
 import {tee} from '#module';
 
 const repr = (x) => JSON.stringify(x);

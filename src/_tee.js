@@ -1,8 +1,8 @@
-import {nrepeat, repeat} from '@iterable-iterator/repeat';
 import {single} from '@data-structure-algebra/singly-linked-list';
+import {nrepeat, repeat} from '@iterable-iterator/repeat';
 
-import myMap from './myMap.js';
 import copy from './copy.js';
+import myMap from './myMap.js';
 
 /**
  * Returns <code>n</code> copies of the input iterator. Note that if the input
