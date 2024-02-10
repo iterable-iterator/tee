@@ -15,7 +15,7 @@ tee('ABC', 2); // [ A B C , A B C ]
 
 [![License](https://img.shields.io/github/license/iterable-iterator/tee.svg)](https://raw.githubusercontent.com/iterable-iterator/tee/main/LICENSE)
 [![Version](https://img.shields.io/npm/v/@iterable-iterator/tee.svg)](https://www.npmjs.org/package/@iterable-iterator/tee)
-[![Tests](https://img.shields.io/github/workflow/status/iterable-iterator/tee/ci?event=push&label=tests)](https://github.com/iterable-iterator/tee/actions/workflows/ci.yml?query=branch:main)
+[![Tests](https://img.shields.io/github/actions/workflow/status/iterable-iterator/tee/ci.yml?branch=main&event=push&label=tests)](https://github.com/iterable-iterator/tee/actions/workflows/ci.yml?query=branch:main)
 [![Dependencies](https://img.shields.io/librariesio/github/iterable-iterator/tee.svg)](https://github.com/iterable-iterator/tee/network/dependencies)
 [![GitHub issues](https://img.shields.io/github/issues/iterable-iterator/tee.svg)](https://github.com/iterable-iterator/tee/issues)
 [![Downloads](https://img.shields.io/npm/dm/@iterable-iterator/tee.svg)](https://www.npmjs.org/package/@iterable-iterator/tee)
